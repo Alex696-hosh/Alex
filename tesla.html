@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla </title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<script>
+  // Mobile Menu Toggle
+const menuToggle = document.querySelector('.menu-toggle');
+const nav = document.querySelector('nav');
+menuToggle.addEventListener('click', () => {
+    nav.classList.toggle('active');
+});
+
+// Dropdown Menu
+const dropdown = document.querySelector('.dropdown');
+const dropbtn = document.querySelector('.dropbtn');
+dropbtn.addEventListener('click', () => {
+    dropdown.classList.toggle('active');
+});
+
+// Close dropdown when clicking outside
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+        const dropdowns = document.querySelectorAll('.dropdown-content');
+        dropdowns.forEach(dropdown => {
+            if (dropdown.classList.contains('active')) {
+                dropdown.classList.remove('active');
+            }
+        });
+    }
+}
+
+// Carousel Functionality
+let currentSlide = 0;
+const slides = document.querySelectorAll('.carousel-item');
+const totalSlides = slides.length;
+
+function showSlide(index) {
+    slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === index);
+    });
+}
+
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    showSlide(currentSlide);
+}
+
+function prevSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    showSlide(currentSlide);
+}
+
+document.querySelector('.carousel-control.next').addEventListener('click', nextSlide);
+document.querySelector('.carousel-control.prev').addEventListener('click', prevSlide);
+
+// Modal Functionality
+const modal = document.getElementById('modal');
+const modalBody = document.getElementById('modal-body');
+const closeModalBtn = document.querySelector('.close');
+
+function openModal(contentId) {
+    const content = document.getElementById(contentId).innerHTML;
+    modalBody.innerHTML = content;
+    modal.style.display = 'block';
+}
+
+function closeModal() {
+    modal.style.display = 'none';
+}
+
+closeModalBtn.addEventListener('click', closeModal);
+window.addEventListener('click', (event) => {
+    if (event.target === modal) {
+        closeModal();
+    }
+});
+
+// Form Validation
+const form = document.getElementById('contact-form');
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const name = form.elements['name'].value;
+    const email = form.elements['email'].value;
+    const message = form.elements['message'].value;
+
+    if (name && email && message) {
+        alert('Thank you for your message!');
+        form.reset();
+    } else {
+        alert('Please fill in all fields.');
+    }
+});
+
+// Smooth Scroll for Navigation Links
+document.querySelectorAll('nav a').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+  
+
+</script>
+
+<style>
+    body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+header {
+    background: #000;
+    color: #fff;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header nav {
+    display: flex;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+header .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+}
+
+.hero {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    padding-top: 60px; /* To account for fixed header */
+    animation: fadeIn 2s;
+    position: relative;
+}
+
+.carousel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.carousel-item {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 1s;
+    opacity: 0;
+}
+
+.carousel-item.active {
+    opacity: 1;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.carousel-control.prev {
+    left: 10px;
+}
+
+.carousel-control.next {
+    right: 10px;
+}
+
+.hero-content {
+    z-index: 1;
+    animation: slideInDown 1s;
+}
+
+.section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.section h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    animation: fadeIn 1s;
+}
+
+.section p, .section form, .section .model-list {
+    font-size: 18px;
+    animation: fadeIn 1s;
+}
+
+.model-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.model {
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s;
+    text-align: center;
+    width: calc(25% - 20px); /* Adjust width to fit 4 items per row with gap */
+    cursor: pointer;
+}
+
+.model img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.model h3 {
+    margin: 10px 0;
+}
+
+.model:hover {
+    transform: scale(1.05);
+}
+
+form input, form textarea, form button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+form button {
+    background: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+form button:hover {
+    background: #333;
+}
+
+.about-img {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 10px;
+    animation: fadeIn 1s;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+    animation: fadeIn 0.5s;
+}
+
+.modal-content {
+    background-color:#f4f4f4;
+}
+</style>
+<body>
+    <header>
+        <div class="logo">
+        <img src="tesla.jpg"  alt="tesla">
+        </div>
+        <nav>
+            <a href="#models">Models</a>
+            <a href="#about">About</a>
+            <a href="energy.html">energy</a>
+            <a href="index.html">main page</a>
+            <a href="model.html">models</a>
+            <a href="model-detail.html">details</a>
+            <div class="dropdown">
+                <button class="dropbtn"> 
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#blog">Blog</a>
+                    <a href="#careers">Careers</a>
+                    <a href="#faq">FAQ</a>
+        </nav>
+        <button class="menu-toggle">☰</button>
+    </header>
+
+    <div class="hero">
+        <div class="carousel">
+            <div class="carousel-item active" style="background-image: url('military.jpg');"></div>
+            <div class="carousel-item" style="background-image: url('elon.jpg');"></div>
+            <div class="carousel-item" style="background-image: url('cybertruck.jpg');"></div>
+            <button class="carousel-control prev" onclick="prevSlide()">‹</button>
+            <button class="carousel-control next" onclick="nextSlide()">›</button>
+        </div>
+        <div class="hero-content">
+            <h1>Experience the Future</h1>
+            <p>Electric cars, solar and clean energy</p>
+        </div>
+    </div>
+
+    <section class="section" id="models">
+        <h2>Our Models</h2>
+        <div class="model-list">
+            <div class="model" onclick="openModal('model-s')">
+                <img src="model s.jpg" alt="Model S">
+                <h3>Model S</h3>
+                <p>Starting at $79,990</p>
+            </div>
+            <div class="model" onclick="openModal('model-3')">
+                <img src="model 3.jpg" alt="Model 3">
+                <h3>Model 3</h3>
+                <p>Starting at $35,000</p>
+            </div>
+            <div class="model" onclick="openModal('model-x')">
+                <img src="model x.jpg" alt="Model X">
+                <h3>Model X</h3>
+                <p>Starting at $89,990</p>
+            </div>
+            <div class="model" onclick="openModal('model-y')">
+                <img src="model y.jpg" alt="Model Y">
+                <h3>Model Y</h3>
+                <p>Starting at $47,490</p>
+            </div>
+            <div class="model" onclick="openModal('model-5')">
+                <img src="tesla 5.jpg" alt="Model 5">
+                <h3>Model S</h3>
+                <p>Starting at $80,990</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="about">
+        <h2>About Tesla</h2>
+        <p>Tesla's mission is to accelerate the world's transition to sustainable energy.</p>
+        <img src="mission.jpg" alt="Tesla Mission" class="about-img">
+    </section>
+
+    <section class="section" id="contact">
+        <h2>Contact Us</h2>
+        <form id="contact-form">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" placeholder="Your Message" required></textarea>
+            <button type="submit">Send</button>
+        </form>
+    </section>
+   
+    <style>
+        body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+header {
+    background: #000;
+    color: #fff;
+    padding: 10px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+}
+
+header .logo img {
+    height: 40px;
+}
+
+header nav {
+    display: flex;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+header .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+}
+
+.hero {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-align: center;
+    padding-top: 60px; /* To account for fixed header */
+    animation: fadeIn 2s;
+    position: relative;
+}
+
+.carousel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.carousel-item {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 1s;
+    opacity: 0;
+}
+
+.carousel-item.active {
+    opacity: 1;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.carousel-control.prev {
+    left: 10px;
+}
+
+.carousel-control.next {
+    right: 10px;
+}
+
+.hero-content {
+    z-index: 1;
+    animation: slideInDown 1s;
+}
+
+.section {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.section h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    animation: fadeIn 1s;
+}
+
+.section p, .section form, .section .model-list, .section .blog-list {
+    font-size: 18px;
+    animation: fadeIn 1s;
+}
+
+.model-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.model {
+    background: #f4f4f4;
+    padding: 20px;
+    border-radius: 10px;
+    transition: transform 0.3s;
+    text-align: center;
+    width: calc(25% - 20px); /* Adjust width to fit 4 items per row with gap */
+    cursor: pointer;
+}
+
+.model img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.model h3 {
+    margin: 10px 0;
+}
+
+.model:hover {
+    transform: scale(1.05);
+}
+
+form input, form textarea, form button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+form button {
+    background: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+form button:hover {
+    background: #333;
+}
+
+.about-img {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 10px;
+    animation: fadeIn 1s;
+}
+
+.blog-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.blog-post {
+    background: #fff
+
+    </style>
+    <section class="section" id="blog">
+        <h2>Our Blog</h2>
+        <div class="blog-list">
+            <div class="blog-post" onclick="openBlogModal('blog-post-1')">
+                <img src="futuritic cars.jpg" alt="The Future of Electric Vehicles">
+                <h3>The Future of Electric Vehicles</h3>
+                <p>Discover how electric vehicles are shaping the future of transportation...</p>
+            </div>
+            <div class="blog-post" onclick="openBlogModal('blog-post-2')">
+                <img src="solar.jpg" alt="Solar Energy Innovations">
+                <h3>Solar Energy Innovations</h3>
+                <p>Learn about the latest innovations in solar energy and how they are making a difference...</p>
+            </div>
+            <div class="blog-post" onclick="openBlogModal('blog-post-3')">
+                <img src="futuristic world.jpg" alt="Sustainable Living with Tesla">
+                <h3>Sustainable Living with Tesla</h3>
+                <p>Explore how Tesla's products are helping people live more sustainably...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Structure -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
